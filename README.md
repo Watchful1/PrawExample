@@ -16,4 +16,6 @@ To run your bot, you need the credentials of the reddit account somewhere, but y
 
 ---
 
+##Saving data between runs
 
+It's important to save data information about what your bot has already done and what it's working on so that if it crashes, or you have to stop it, it doesn't lose its place. There are a bunch of different ways to do this, of varying complexity. This is an area where its easy to make things a bunch more complicated than they need to be, so it's a good idea to think carefully about how to do this. I break down the various ways I use [here](src/saving/SAVING.md).
