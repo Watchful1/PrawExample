@@ -6,7 +6,7 @@
 # In this case only praw is an external library we install, all the others are built into python
 import praw                 # praw is the library we use to interact with the reddit api
 import os                   # this does stuff like handle file paths
-import logging.handlers     # this is the python logging library, see the logging setup section below
+import logging_setup.handlers     # this is the python logging library, see the logging setup section below
 import sys                  # this handles system level stuff, like command line arguments and exiting the program
 import configparser         # this handles the python config files. In this case we're only using it to interact
 							# with the praw config file
@@ -33,7 +33,7 @@ LOOP_TIME = 5 * 60                          # There are lots of different ways t
 											# trying again. 5 times 60, ie, five minutes
 REDDIT_OWNER = "Watchful1"                  # It's sometimes helpful to have the bot only respond to commands from
 											# you, the owner. I set that here so it can be changed easily
-LOG_LEVEL = logging.INFO                    # Logging level. This is explained below
+LOG_LEVEL = logging_setup.INFO                    # Logging level. This is explained below
 
 # Setting up logging. Logging is your first step when figuring out what went wrong. Both as you are developing and
 # after the bot has been running for a while and you need to go back and see what happened a few hours ago. There are
@@ -70,22 +70,22 @@ LOG_FILE_MAXSIZE = 1024 * 1024 * 16             # This is the size to let the lo
 												# and starting a new one. It's in bytes, so 1024 bytes is a kilobyte,
 												# then 1024 of those is a megabyte, then we want 16 megabytes
 
-log = logging.getLogger("bot")                  # this is the name of the logger. This lets us get a copy of it
+log = logging_setup.getLogger("bot")                  # this is the name of the logger. This lets us get a copy of it
 												# in other files without doing all the setup again
 log.setLevel(LOG_LEVEL)                         # set the log level to the one we defined above
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)s: %(message)s')   # This is the format of the line we
+log_formatter = logging_setup.Formatter('%(asctime)s - %(levelname)s: %(message)s')   # This is the format of the line we
 																				# print out. It's the time it happened,
 																				# then the log level it happened at,
 																				# then the message we wanted to print
-log_stderrHandler = logging.StreamHandler()     # This is where the output goes. In this case we are printing out to
+log_stderrHandler = logging_setup.StreamHandler()     # This is where the output goes. In this case we are printing out to
 												# the console where we are running our program
 log_stderrHandler.setFormatter(log_formatter)
 log.addHandler(log_stderrHandler)
 if LOG_FILENAME is not None:                    # Then this one is the file output to the log file we defined above,
 												# so it does both at once
-	log_fileHandler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
-	                                                       maxBytes=LOG_FILE_MAXSIZE,
-	                                                       backupCount=LOG_FILE_BACKUPCOUNT)
+	log_fileHandler = logging_setup.handlers.RotatingFileHandler(LOG_FILENAME,
+																 maxBytes=LOG_FILE_MAXSIZE,
+																 backupCount=LOG_FILE_BACKUPCOUNT)
 	log_fileHandler.setFormatter(log_formatter)
 	log.addHandler(log_fileHandler)
 
@@ -122,7 +122,7 @@ if len(sys.argv) >= 2:
 			once = True
 		elif arg == 'debug':
 			debug = True
-			log.setLevel(logging.DEBUG)
+			log.setLevel(logging_setup.DEBUG)
 else:
 	log.error("No user specified, aborting")
 	sys.exit(0)

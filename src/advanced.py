@@ -2,7 +2,7 @@
 
 import praw
 import os
-import logging.handlers
+import logging_setup.handlers
 import sys
 import configparser
 import signal
@@ -13,7 +13,7 @@ SUBREDDIT = "default"
 USER_AGENT = "default (by /u/Watchful1)"
 LOOP_TIME = 5 * 60
 REDDIT_OWNER = "Watchful1"
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging_setup.INFO
 
 
 LOG_FOLDER_NAME = "logs"
@@ -23,16 +23,16 @@ LOG_FILENAME = LOG_FOLDER_NAME+"/"+"bot.log"
 LOG_FILE_BACKUPCOUNT = 5
 LOG_FILE_MAXSIZE = 1024 * 1024 * 16
 
-log = logging.getLogger("bot")
+log = logging_setup.getLogger("bot")
 log.setLevel(LOG_LEVEL)
-log_formatter = logging.Formatter('%(asctime)s - %(levelname)s: %(message)s')
-log_stderrHandler = logging.StreamHandler()
+log_formatter = logging_setup.Formatter('%(asctime)s - %(levelname)s: %(message)s')
+log_stderrHandler = logging_setup.StreamHandler()
 log_stderrHandler.setFormatter(log_formatter)
 log.addHandler(log_stderrHandler)
 if LOG_FILENAME is not None:
-	log_fileHandler = logging.handlers.RotatingFileHandler(LOG_FILENAME,
-	                                                       maxBytes=LOG_FILE_MAXSIZE,
-	                                                       backupCount=LOG_FILE_BACKUPCOUNT)
+	log_fileHandler = logging_setup.handlers.RotatingFileHandler(LOG_FILENAME,
+																 maxBytes=LOG_FILE_MAXSIZE,
+																 backupCount=LOG_FILE_BACKUPCOUNT)
 	log_fileHandler.setFormatter(log_formatter)
 	log.addHandler(log_fileHandler)
 
@@ -55,7 +55,7 @@ if len(sys.argv) >= 2:
 			once = True
 		elif arg == 'debug':
 			debug = True
-			log.setLevel(logging.DEBUG)
+			log.setLevel(logging_setup.DEBUG)
 else:
 	log.error("No user specified, aborting")
 	sys.exit(0)
